@@ -1,6 +1,7 @@
 from django.db import models
 
 DISCIPLINE_NAME_MAX_LENGTH = 128
+DISCIPLINE_CONTENT_MAX_LENGTH = 256
 USERNAME_MAX_LENGTH = 256
 
 
@@ -34,6 +35,12 @@ class UserDisciplineEvent(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         help_text='the type of discipline this instance represents'
+    )
+    discipline_content = models.CharField(
+        max_length=DISCIPLINE_CONTENT_MAX_LENGTH,
+        verbose_name='Discipline Content',
+        help_text='The discipline data content, if any',
+        blank=True
     )
     username_when_disciplined = models.CharField(
         max_length=USERNAME_MAX_LENGTH,
