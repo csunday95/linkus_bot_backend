@@ -16,3 +16,4 @@ class UserDisciplineEventSerializer(serializers.ModelSerializer):
             'discipline_start_date_time',
             'is_terminated'
         ]
+        depth = 2
