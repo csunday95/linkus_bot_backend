@@ -20,6 +20,8 @@ class UserDisciplineEventAdmin(admin.ModelAdmin):
     search_fields = ['discord_user_snowflake', 'discipline_type', 'username_when_disciplined']
     list_filter = ['discipline_type', 'is_pardoned']
     readonly_fields = [
+        'discipline_type',
+        'discipline_content',
         'discord_user_snowflake',
         'username_when_disciplined',
         'moderator_user_snowflake',
