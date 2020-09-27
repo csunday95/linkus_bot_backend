@@ -1,8 +1,9 @@
-from django.shortcuts import render
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from .serializers import *
 from .models import *
 
@@ -29,6 +30,7 @@ class UserDisciplineTypeViewSet(viewsets.ReadOnlyModelViewSet):
 class UserDisciplineEventViewSet(viewsets.ModelViewSet):
     queryset = UserDisciplineEvent.objects.all()
     serializer_class = UserDisciplineEventSerializer
+    pagination_class = PageNumberPagination
 
     def create(self, request, *args, **kwargs):
         serializer = CreateUserDisciplineEventSerializer(data=request.data)
@@ -48,6 +50,10 @@ class UserDisciplineEventViewSet(viewsets.ModelViewSet):
         events = UserDisciplineEvent.objects\
             .filter(discord_user_snowflake=user_snowflake)\
             .order_by('-discipline_start_date_time')
+        page = self.paginate_queryset(events)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(events, many=True)
         return Response(serializer.data)
 
