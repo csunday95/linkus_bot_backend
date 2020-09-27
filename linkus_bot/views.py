@@ -44,11 +44,12 @@ class UserDisciplineEventViewSet(viewsets.ModelViewSet):
     def get_discipline_events_for(self, request: Request):
         params = request.query_params
         try:
+            guild_snowflake = int(params['guild_snowflake'])
             user_snowflake = int(params['user_snowflake'])
         except (ValueError, TypeError, KeyError):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         events = UserDisciplineEvent.objects\
-            .filter(discord_user_snowflake=user_snowflake)\
+            .filter(discord_user_snowflake=user_snowflake, discord_guild_snowflake=guild_snowflake)\
             .order_by('-discipline_start_date_time')
         page = self.paginate_queryset(events)
         if page is not None:
@@ -61,13 +62,15 @@ class UserDisciplineEventViewSet(viewsets.ModelViewSet):
     def get_latest_discipline(self, request: Request):
         params = request.query_params
         try:
+            guild_snowflake = int(params['guild_snowflake'])
             user_snowflake = int(params['user_snowflake'])
             discipline_name = params['discipline_name']
         except (ValueError, TypeError, KeyError):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         try:
             latest_discipline = UserDisciplineEvent.objects\
-                .filter(discord_user_snowflake=user_snowflake,
+                .filter(discord_guild_snowflake=guild_snowflake,
+                        discord_user_snowflake=user_snowflake,
                         discipline_type__discipline_name__iexact=discipline_name)\
                 .latest('discipline_start_date_time')
         except UserDisciplineEvent.DoesNotExist:
@@ -78,11 +81,13 @@ class UserDisciplineEventViewSet(viewsets.ModelViewSet):
     def get_latest_discipline_by_username(self, request: Request):
         params = request.query_params
         try:
+            guild_snowflake = int(params['guild_snowflake'])
             username = params['username']
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         try:
             latest_relevant_event = UserDisciplineEvent.objects.filter(
+                discord_guild_snowflake=guild_snowflake,
                 username_when_disciplined__iexact=username
             ).latest('discipline_start_date_time')
         except UserDisciplineEvent.DoesNotExist:

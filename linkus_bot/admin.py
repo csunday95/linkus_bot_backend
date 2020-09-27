@@ -10,6 +10,7 @@ class UserDisciplineTypeAdmin(admin.ModelAdmin):
 @admin.register(UserDisciplineEvent)
 class UserDisciplineEventAdmin(admin.ModelAdmin):
     list_display = [
+        'discord_guild_snowflake',
         'username_when_disciplined',
         'discipline_type',
         'discipline_start_date_time',

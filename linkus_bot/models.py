@@ -26,6 +26,10 @@ class UserDisciplineEvent(models.Model):
     class Meta:
         verbose_name_plural = 'User Discipline Events'
 
+    discord_guild_snowflake = models.BigIntegerField(
+        verbose_name='Discord Guild Snowflake',
+        help_text='The Discord Snowflake of the guild this event is related to'
+    )
     discord_user_snowflake = models.BigIntegerField(
         verbose_name='Disciplined Discord User Snowflake',
         help_text='the Discord snowflake of the user discipline by this instance'
