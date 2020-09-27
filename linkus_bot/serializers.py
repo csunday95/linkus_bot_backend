@@ -13,7 +13,12 @@ class UserDisciplineEventSerializer(serializers.ModelSerializer):
         model = UserDisciplineEvent
         fields = '__all__'
         read_only_fields = [
-            'discipline_start_date_time',
-            'is_terminated'
+            'discipline_start_date_time'
         ]
         depth = 2
+
+
+class CreateUserDisciplineEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserDisciplineEvent
+        fields = '__all__'

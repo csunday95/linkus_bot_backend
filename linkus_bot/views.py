@@ -30,6 +30,14 @@ class UserDisciplineEventViewSet(viewsets.ModelViewSet):
     queryset = UserDisciplineEvent.objects.all()
     serializer_class = UserDisciplineEventSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = CreateUserDisciplineEventSerializer(data=request.data)
+        if serializer.is_valid():
+            save_result = serializer.save()
+            output_serializer = UserDisciplineEventSerializer(save_result)
+            return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     @action(detail=False)
     def get_discipline_events_for(self, request: Request):
         params = request.query_params

@@ -32,8 +32,7 @@ class UserDisciplineEvent(models.Model):
     )
     discipline_type = models.ForeignKey(
         UserDisciplineType,
-        on_delete=models.SET_NULL,
-        null=True,
+        on_delete=models.CASCADE,
         help_text='the type of discipline this instance represents'
     )
     discipline_content = models.CharField(
