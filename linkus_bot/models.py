@@ -1,7 +1,9 @@
 from django.db import models
+import uuid
 
 DISCIPLINE_NAME_MAX_LENGTH = 128
 DISCIPLINE_CONTENT_MAX_LENGTH = 256
+GUILD_NAME_MAX_LENGTH = 128
 USERNAME_MAX_LENGTH = 256
 
 
@@ -26,9 +28,21 @@ class UserDisciplineEvent(models.Model):
     class Meta:
         verbose_name_plural = 'User Discipline Events'
 
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        verbose_name='ID',
+        help_text='The unique identifier for this model entry (also primary key)'
+    )
     discord_guild_snowflake = models.BigIntegerField(
         verbose_name='Discord Guild Snowflake',
         help_text='The Discord Snowflake of the guild this event is related to'
+    )
+    discord_guild_name = models.CharField(
+        max_length=GUILD_NAME_MAX_LENGTH,
+        verbose_name='Discord Guild Name',
+        help_text='The name of the discord guild at the time of event creation'
     )
     discord_user_snowflake = models.BigIntegerField(
         verbose_name='Disciplined Discord User Snowflake',
@@ -53,6 +67,11 @@ class UserDisciplineEvent(models.Model):
     moderator_user_snowflake = models.BigIntegerField(
         verbose_name='Moderator Discord User Snowflake',
         help_text='The Discord snowflake of the moderator performing the discipline'
+    )
+    moderator_username = models.CharField(
+        max_length=USERNAME_MAX_LENGTH,
+        verbose_name='Moderator Username',
+        help_text='The moderator\'s username at the time this event was created'
     )
     reason_for_discipline = models.TextField(
         verbose_name='Reason for Discipline',

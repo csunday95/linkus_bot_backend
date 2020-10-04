@@ -13,7 +13,8 @@ class UserDisciplineEventSerializer(serializers.ModelSerializer):
         model = UserDisciplineEvent
         fields = '__all__'
         read_only_fields = [
-            'discipline_start_date_time'
+            'discipline_start_date_time',
+            'id'
         ]
         depth = 2
 
