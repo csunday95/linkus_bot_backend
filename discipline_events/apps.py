@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class LinkusBotConfig(AppConfig):
-    name = 'linkus_bot'
+    name = 'discipline_events'
