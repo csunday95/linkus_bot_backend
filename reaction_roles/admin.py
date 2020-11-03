@@ -4,9 +4,9 @@ from .models import *
 
 @admin.register(TrackedReactionRoleEmbed)
 class TrackedReactionRoleEmbedAdmin(admin.ModelAdmin):
-    list_display = ['message_snowflake', 'creating_member_snowflake', 'creation_time']
-    search_fields = ['message_snowflake', 'creating_member_snowflake', 'creation_time']
-    list_filter = ['creating_member_snowflake']
+    list_display = ['message_snowflake', 'guild_snowflake', 'creating_member_snowflake', 'creation_time']
+    search_fields = ['guild_snowflake', 'message_snowflake', 'creating_member_snowflake', 'creation_time']
+    list_filter = ['guild_snowflake', 'creating_member_snowflake']
     readonly_fields = ['creating_member_snowflake', 'creation_time']
 
 

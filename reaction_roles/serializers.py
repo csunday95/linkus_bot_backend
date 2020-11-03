@@ -26,6 +26,7 @@ class TrackedReactionRoleEmbedSerializer(serializers.ModelSerializer):
         try:
             return {
                 'message_snowflake': data['message_snowflake'],
+                'guild_snowflake': data['guild_snowflake'],
                 'creating_member_snowflake': data['creating_member_snowflake'],
                 'mappings': mapping_serializer.validated_data
             }

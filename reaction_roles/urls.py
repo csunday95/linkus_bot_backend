@@ -1,8 +1,8 @@
 
-from django.urls import path
 from .views import *
+from rest_framework import routers
 
-urlpatterns = [
-    path('tracked-reaction-embed/', TrackedReactionRoleEmbedCreateView.as_view()),
-    path('tracked-reaction-embed/<int:message_snowflake>/', TrackedReactionRoleEmbedRetrieveView.as_view())
-]
+router = routers.SimpleRouter()
+router.register(r'tracked-reaction-embed', TrackedReactionRoleEmbedCreateView)
+
+urlpatterns = router.urls
