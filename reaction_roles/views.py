@@ -57,3 +57,26 @@ class TrackedReactionRoleEmbedCreateView(ModelViewSet):
             mapping['tracked_embed'] = embed
             ReactionRoleEmojiMapping.objects.create(**mapping)
         return Response(status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'])
+    def remove_mappings(self, request: Request, pk=None):
+        resp = self._check_guild(request)
+        if resp is not None:
+            return resp
+        embed = self.get_object()
+        for emoji_id in request.data:
+            if not isinstance(emoji_id, int):
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            queryset = ReactionRoleEmojiMapping.objects.filter(
+                tracked_embed=embed,
+                emoji_snowflake=emoji_id
+            )
+            if queryset.count() == 0:
+                continue
+            count, _ = queryset.delete()
+            if count == 0:
+                return Response(
+                    f'Unable to delete mapping for {emoji_id}',
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+        return Response(status=status.HTTP_200_OK)
