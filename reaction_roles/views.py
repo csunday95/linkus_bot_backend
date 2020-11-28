@@ -4,7 +4,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
-from .serializers import *
+from django.db.utils import IntegrityError
+from .models import TrackedReactionRoleEmbed, ReactionRoleEmojiMapping
+from .serializers import TrackedReactionRoleEmbedSerializer, ReactionRoleEmojiMappingSerializer
 
 
 class TrackedReactionRoleEmbedCreateView(ModelViewSet):
@@ -19,6 +21,15 @@ class TrackedReactionRoleEmbedCreateView(ModelViewSet):
         if str(embed.guild_snowflake) == request.query_params['guild_snowflake']:
             return None
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def create(self, request: Request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except IntegrityError:
+            return Response(
+                'Reaction role embed with that alias already exists', 
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     def retrieve(self, request: Request, *args, **kwargs):
         resp = self._check_guild(request)

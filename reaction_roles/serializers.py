@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from .models import *
+from .models import TrackedReactionRoleEmbed, ReactionRoleEmojiMapping
 
 
 class TrackedReactionRoleEmbedSerializer(serializers.ModelSerializer):
@@ -27,6 +27,7 @@ class TrackedReactionRoleEmbedSerializer(serializers.ModelSerializer):
             return {
                 'message_snowflake': data['message_snowflake'],
                 'guild_snowflake': data['guild_snowflake'],
+                'alias': data['alias'],
                 'creating_member_snowflake': data['creating_member_snowflake'],
                 'mappings': mapping_serializer.validated_data
             }
@@ -35,7 +36,7 @@ class TrackedReactionRoleEmbedSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         mapping_list = validated_data.pop('mappings')
-        created_tracked_embed = TrackedReactionRoleEmbed.objects.create(**validated_data)
+        created_tracked_embed = super().create(validated_data)
         for mapping in mapping_list:  # type: dict
             mapping['tracked_embed'] = created_tracked_embed
             ReactionRoleEmojiMapping.objects.create(**mapping)

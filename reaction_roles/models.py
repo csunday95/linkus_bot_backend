@@ -1,9 +1,15 @@
 from django.db import models
 
+ALIAS_MAX_LENGTH = 64
+
 
 class TrackedReactionRoleEmbed(models.Model):
     class Meta:
         verbose_name_plural = 'Tracked Reaction Role Embeds'
+        constraints = [models.UniqueConstraint(
+            fields=['guild_snowflake', 'alias'], 
+            name='unique_alias'
+        )]
 
     message_snowflake = models.BigIntegerField(
         primary_key=True,
@@ -13,6 +19,12 @@ class TrackedReactionRoleEmbed(models.Model):
     guild_snowflake = models.BigIntegerField(
         verbose_name='Guild Snowflake',
         help_text='The guild within which this reaction role embed exists'
+    )
+    alias = models.CharField(
+        max_length=ALIAS_MAX_LENGTH,
+        verbose_name='Alias',
+        help_text='A human readable alias for this reaction role embed',
+        blank=False
     )
     creating_member_snowflake = models.BigIntegerField(
         verbose_name='Creating Member Snowflake',
