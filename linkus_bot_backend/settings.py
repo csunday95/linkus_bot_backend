@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'discipline_events',
     'reaction_roles',
+    'bot_configuration',
     'rest_framework',
     'rest_framework.authtoken'
 ]

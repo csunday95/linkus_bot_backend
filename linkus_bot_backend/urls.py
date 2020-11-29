@@ -20,5 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/discipline/', include('discipline_events.urls')),
-    path('api/reaction/', include('reaction_roles.urls'))
+    path('api/reaction/', include('reaction_roles.urls')),
+    path('api/configuration/', include('bot_configuration.urls'))
 ]
