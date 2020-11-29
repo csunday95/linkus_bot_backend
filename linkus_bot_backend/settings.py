@@ -20,6 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# debugging secret key
 SECRET_KEY = '8c#pmnnm+coxwq@pu%*wygf^1w4_x7hhla)gn=kqrt+i))k!e_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -38,9 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'discipline_events',
+    'reaction_roles',
     'rest_framework',
     'rest_framework.authtoken'
 ]
+
+if DEBUG:
+    INSTALLED_APPS.append('django_extensions')
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
